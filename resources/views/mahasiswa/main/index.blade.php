@@ -4,10 +4,16 @@
 
 @section('content')
     <div id="show-all-mahasiswa">
-        <div class="title text-center">
+        <div class="title text-center my-2">
             <h1 class="font-weight-bold">Show All Mahasiswa</h1>
         </div>
         <div class="content mt-5">
+            <div class="my-2 text-right">
+                <a href="{{ route('mahasiswa.create') }}" type="button"
+                   class="btn btn-success justify-content-center align-content-between">
+                    <span>Add New Mahasiswa</span>
+                </a>
+            </div>
             <table class="table m-auto text-center">
                 <thead>
                 <tr>

@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NewMahasiswaRequest;
 use App\Models\Mahasiswa;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 
 class MahasiswaController extends Controller
 {
@@ -12,25 +16,29 @@ class MahasiswaController extends Controller
         return view('mahasiswa.main.index', ['mahasiswas' => Mahasiswa::all()]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('mahasiswa.main.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param NewMahasiswaRequest $newMahasiswaRequest
+     * @return Application|RedirectResponse|Redirector
      */
-    public function store(Request $request)
+    public function store(NewMahasiswaRequest $newMahasiswaRequest)
     {
-        //
+        $newMahasiswaRequest = $newMahasiswaRequest->validated();
+
+        $newMahasiswa = new Mahasiswa();
+        $newMahasiswa->nim = $newMahasiswaRequest['nimMahasiswa'];
+        $newMahasiswa->nama = $newMahasiswaRequest['namaMahasiswa'];
+        $newMahasiswa->jenis_kelamin = $newMahasiswaRequest['jenisKelaminMahasiswa'];
+        $newMahasiswa->usia = $newMahasiswaRequest['usiaMahasiswa'];
+        $newMahasiswa->save();
+
+        return redirect('mahasiswa');
     }
 
     /**
