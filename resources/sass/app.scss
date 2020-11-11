@@ -1,0 +1,25 @@
+// Fonts
+@font-face {
+    font-family: 'Rubik';
+    src: url('/assets/fonts/Rubik-Regular.ttf') format('ttf');
+    font-weight: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Rubik';
+    src: url('/assets/fonts/Rubik-Medium.ttf') format('ttf');
+    font-weight: 500;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Rubik';
+    src: url('/assets/fonts/Rubik-SemiBold.ttf') format('ttf');
+    font-weight: bold;
+    font-display: swap;
+}
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
