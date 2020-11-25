@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 
-class NewMahasiswaRequest extends FormRequest
+class MahasiswaRequest extends FormRequest
 {
     private $validatedJenisKelamin;
 
@@ -29,7 +29,7 @@ class NewMahasiswaRequest extends FormRequest
         $this->validatedJenisKelamin = ['laki-laki', 'perempuan', 'lainnya'];
 
         return [
-            'nimMahasiswa' => 'required|numeric|unique:mahasiswa,nim',
+            'nimMahasiswa' => 'sometimes|numeric|unique:mahasiswa,nim',
             'namaMahasiswa' => 'required|string',
             'jenisKelaminMahasiswa' => [
                 'required',

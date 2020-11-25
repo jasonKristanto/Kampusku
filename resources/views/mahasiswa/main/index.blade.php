@@ -20,8 +20,6 @@
                     <th>#</th>
                     <th>NIM</th>
                     <th>Nama</th>
-                    <th>Jenis Kelamin</th>
-                    <th>Usia</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -31,15 +29,21 @@
                         <td>{{ $loop->index + 1 }}</td>
                         <td>{{ $mahasiswa->nim }}</td>
                         <td>{{ $mahasiswa->nama }}</td>
-                        <td>{{ $mahasiswa->jenis_kelamin }}</td>
-                        <td>{{ $mahasiswa->usia }}</td>
                         <td>
-                            <a href="#" type="button" class="btn btn-primary btn-sm">
-                                <i class="material-icons" aria-hidden="true">create</i>
+                            <a href="{{ route('mahasiswa.show', $mahasiswa->nim) }}" type="button" class="btn btn-secondary btn-sm">
+                                Detail Mahasiswa
                             </a>
-                            <a href="#" type="button" class="btn btn-danger btn-sm">
-                                <i class="material-icons" aria-hidden="true">delete</i>
+                            <a href="{{ route('mahasiswa.edit', $mahasiswa->nim) }}" type="button" class="btn btn-primary btn-sm">
+                                Edit Mahasiswa
                             </a>
+                            <a href="{{ route('mahasiswa.destroy', $mahasiswa->nim) }}" type="button" class="btn btn-danger btn-sm"
+                            onclick="event.preventDefault(); document.getElementById('delete-mahasiswa').submit()">
+                                Delete Mahasiswa
+                            </a>
+                            <form id="delete-mahasiswa" method="POST" action="{{ route('mahasiswa.destroy', $mahasiswa->nim) }}">
+                                {{ method_field('DELETE') }}
+                                @csrf
+                            </form>
                         </td>
                     </tr>
                 @endforeach

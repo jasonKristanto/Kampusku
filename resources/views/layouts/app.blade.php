@@ -16,5 +16,6 @@
         @yield('content')
     </div>
     <script src="{{ mix('js/app.js') }}" defer></script>
+    @yield('custom-script')
 </body>
 </html>
