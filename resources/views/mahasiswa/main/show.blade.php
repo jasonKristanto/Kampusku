@@ -9,6 +9,10 @@
         </div>
         <div class="content mt-5">
             <div class="my-2 text-right">
+                <a href="{{ route('mahasiswa.index') }}" type="button"
+                   class="btn btn-primary justify-content-center align-content-between">
+                    <span>Kembali</span>
+                </a>
                 <a href="{{ route('mahasiswa.edit', $mahasiswa->nim) }}" type="button"
                    class="btn btn-secondary justify-content-center align-content-between">
                     <span>Edit Mahasiswa</span>

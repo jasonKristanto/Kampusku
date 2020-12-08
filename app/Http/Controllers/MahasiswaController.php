@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MahasiswaRequest;
 use App\Models\Mahasiswa;
+use App\Repositories\Interfaces\BaseRepositoryInterface;
+use App\Repositories\Interfaces\IMahasiswaRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -14,9 +16,16 @@ use Illuminate\Routing\Redirector;
 
 class MahasiswaController extends Controller
 {
+    private $msMahasiswa;
+
+    public function __construct()
+    {
+        $this->msMahasiswa = app(IMahasiswaRepository::class);
+    }
+
     public function index()
     {
-        return view('mahasiswa.main.index', ['mahasiswas' => Mahasiswa::all()]);
+        return view('mahasiswa.main.index', ['mahasiswas' => $this->msMahasiswa->all()]);
     }
 
     public function create()
@@ -34,12 +43,14 @@ class MahasiswaController extends Controller
     {
         $newMahasiswaRequest = $newMahasiswaRequest->validated();
 
-        $newMahasiswa = new Mahasiswa();
-        $newMahasiswa->nim = $newMahasiswaRequest['nimMahasiswa'];
-        $newMahasiswa->nama = $newMahasiswaRequest['namaMahasiswa'];
-        $newMahasiswa->jenis_kelamin = $newMahasiswaRequest['jenisKelaminMahasiswa'];
-        $newMahasiswa->usia = $newMahasiswaRequest['usiaMahasiswa'];
-        $newMahasiswa->save();
+        $newMahasiswa = [
+            "nim" => $newMahasiswaRequest['nimMahasiswa'],
+            "nama" => $newMahasiswaRequest['namaMahasiswa'],
+            "jenis_kelamin" => $newMahasiswaRequest['jenisKelaminMahasiswa'],
+            "usia" => $newMahasiswaRequest['usiaMahasiswa']
+        ];
+
+        $this->msMahasiswa->create($newMahasiswa);
 
         return redirect('mahasiswa');
     }
@@ -52,7 +63,7 @@ class MahasiswaController extends Controller
      */
     public function show($id)
     {
-        return view('mahasiswa.main.show', ['mahasiswa' => Mahasiswa::find($id)]);
+        return view('mahasiswa.main.show', ['mahasiswa' => $this->msMahasiswa->find($id)]);
     }
 
     /**
@@ -62,7 +73,7 @@ class MahasiswaController extends Controller
      */
     public function edit($id)
     {
-        return view('mahasiswa.main.edit', ['mahasiswa' => Mahasiswa::find($id)]);
+        return view('mahasiswa.main.edit', ['mahasiswa' => $this->msMahasiswa->find($id)]);
     }
 
     /**
@@ -73,13 +84,15 @@ class MahasiswaController extends Controller
      */
     public function update(MahasiswaRequest $request, $id)
     {
-        $request = $request->validated();
+        $updatedMahasiswaRequest = $request->validated();
 
-        $mahasiswa = Mahasiswa::find($id);
-        $mahasiswa->nama = $request['namaMahasiswa'];
-        $mahasiswa->jenis_kelamin = $request['jenisKelaminMahasiswa'];
-        $mahasiswa->usia = $request['usiaMahasiswa'];
-        $mahasiswa->save();
+        $updatedMahasiswa = [
+            "nama" => $updatedMahasiswaRequest['namaMahasiswa'],
+            "jenis_kelamin" => $updatedMahasiswaRequest['jenisKelaminMahasiswa'],
+            "usia" => $updatedMahasiswaRequest['usiaMahasiswa']
+        ];
+
+        $this->msMahasiswa->update($id, $updatedMahasiswa);
 
         return redirect('mahasiswa');
     }
@@ -87,13 +100,12 @@ class MahasiswaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param $id
      * @return Application|RedirectResponse|Response|Redirector
      */
     public function destroy($id)
     {
-        $mahasiswa = Mahasiswa::find($id);
-        $mahasiswa->delete();
+        $this->msMahasiswa->delete($id);
 
         return redirect('mahasiswa');
     }
